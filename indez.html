@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eurostock - Projeto Rumo ao Bilhão</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+/* 1. CONFIGURAÇÃO BASE */
+* {
+  box-sizing: border-box;
+}
+
+p {
+  margin: 0;
+  margin-bottom: 15px;
+}
+
+body {
+  background-color: #0b0c10;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+  margin: 0;
+  min-height: 100vh;
+  padding: 20px 0;
+  place-items: center;
+}
+
+/* Recipiente do Slide */
+.slide-container {
+  align-items: flex-start;
+  background-color: #0b0c10;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Urbanist', sans-serif;
+  height: 720px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 60px;
+  position: relative;
+  width: 1280px;
+}
+
+/* Elementos de Fundo (Tema Escuro) */
+.slide-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 80% -20%, rgba(197, 160, 89, 0.15), transparent 50%),
+              radial-gradient(circle at 10% 110%, rgba(197, 160, 89, 0.05), transparent 40%);
+  z-index: 0;
+}
+
+.slide-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #c5a059, #f2d06b);
+  z-index: 0;
+}
+
+.slide-container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 2. TIPOGRAFIA */
+.slide-container h1,
+.slide-container h2,
+.slide-container h3,
+.slide-container h4 {
+  color: #ffffff;
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 600;
+  margin: 0;
+}
+
+.slide-container h1 span,
+.slide-container h2 span,
+.slide-container .highlight-text {
+  color: #c5a059;
+}
+
+.slide-container p,
+.slide-container li,
+.slide-container .subtitle,
+.slide-container .number-label,
+.slide-container th,
+.slide-container td,
+.slide-container .bleed-text-side p {
+  color: #cfcfcf;
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.slide-container h1 {
+  font-size: 70px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.slide-container .slide-title {
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  text-align: left;
+  width: 100%;
+}
+
+.slide-container h3 {
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.slide-container .subtitle {
+  font-size: 24px;
+  line-height: 1.4;
+  margin: 20px auto 0;
+  color: #a0a0a0;
+}
+
+.slide-container .content-area {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  width: 100%;
+}
+
+/* 3. ESTRUTURAS DE LAYOUT */
+.title-layout {
+  text-align: center;
+  width: 100%;
+}
+
+.section-title-layout {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.section-title-layout h2 {
+  font-size: 60px;
+  margin-bottom: 20px;
+}
+
+.section-title-layout p {
+  font-size: 22px;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.section-title-layout hr {
+  background-color: #c5a059;
+  border: none;
+  height: 5px;
+  margin: 30px auto;
+  width: 100px;
+}
+
+/* Números em Destaque */
+.highlight-numbers-layout {
+  align-items: center;
+  display: flex;
+  gap: 50px;
+  width: 100%;
+}
+
+.highlight-numbers-layout > div:first-child {
+  flex: 0 0 40%;
+  text-align: center;
+}
+
+.highlight-numbers-layout .number {
+  color: #c5a059;
+  font-size: 130px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.highlight-numbers-layout .number-label {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Duas Colunas */
+.two-column {
+  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  width: 100%;
+}
+
+.two-column.tiled {
+  align-items: stretch;
+}
+
+.two-column.tiled > div {
+  background-color: #1f2833;
+  border-radius: 12px;
+  border: 1px solid #333f4f;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.two-column.tiled h3 {
+  color: #c5a059;
+}
+
+.two-column ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.two-column li {
+  margin-bottom: 20px;
+  padding-left: 30px;
+  position: relative;
+}
+
+.two-column li::before {
+  content: '\f101'; /* FontAwesome angle-double-right */
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  color: #c5a059;
+  position: absolute;
+  left: 0;
+  top: 2px;
+}
+
+.image-wrapper {
+  border-radius: 12px;
+  height: 450px;
+  max-width: 100%;
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid #333f4f;
+}
+
+/* Marcador de Imagem */
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #151b22;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c5a059;
+  font-size: 20px;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Blocos de Texto com Ícones */
+.tiled-content {
+  align-items: stretch;
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  width: 100%;
+}
+
+.tile {
+  align-items: flex-start;
+  background-color: #1f2833;
+  border-radius: 12px;
+  border: 1px solid #333f4f;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 40px 30px;
+  text-align: left;
+}
+
+.tile .icon {
+  color: #c5a059;
+  font-size: 48px;
+  margin-bottom: 25px;
+}
+
+.tile h3 {
+  font-size: 26px;
+  color: #ffffff;
+}
+
+/* Layout de Tabela */
+.table-layout {
+  width: 100%;
+  background-color: #1f2833;
+  border-radius: 12px;
+  border: 1px solid #333f4f;
+  overflow: hidden;
+}
+
+.table-layout table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-layout th,
+.table-layout td {
+  border-bottom: 1px solid #333f4f;
+  padding: 20px 24px;
+  text-align: left;
+  font-size: 18px;
+}
+
+.table-layout th {
+  background-color: #151b22;
+  color: #c5a059;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.table-layout tr:last-child td {
+  border-bottom: none;
+}
+
+.table-layout tr td:first-child {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Linha do Tempo (Timeline) */
+.timeline-layout {
+  align-items: stretch;
+  display: flex;
+  height: stretch;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.timeline-layout .timeline-line {
+  background-color: #333f4f;
+  height: 4px;
+  left: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-2px);
+  width: 100%;
+  z-index: 0;
+}
+
+.timeline-item {
+  position: relative;
+  text-align: center;
+  width: 30%;
+}
+
+.timeline-item::after {
+  background-color: #0b0c10;
+  border-radius: 50%;
+  border: 4px solid #c5a059;
+  content: '';
+  height: 24px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  z-index: 1;
+}
+
+.timeline-item .content-wrapper {
+  left: 0;
+  position: absolute;
+  width: 100%;
+  background-color: #1f2833;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #333f4f;
+}
+
+.timeline-item:nth-child(odd) .content-wrapper {
+  bottom: 50%;
+  margin-bottom: 35px;
+}
+
+.timeline-item:nth-child(even) .content-wrapper {
+  margin-top: 35px;
+  top: 50%;
+}
+
+.timeline-item h3 {
+  color: #c5a059;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.timeline-item p {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+/* Imagem Sangrada à Direita */
+.slide-container.bleed-image-layout {
+  align-items: start;
+  display: grid;
+  gap: 50px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0;
+}
+
+.slide-container.bleed-image-layout > .content-container {
+  padding: 60px 0 60px 60px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.slide-container.bleed-image-layout > .image-container {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.slide-container.bleed-image-layout .bleed-image-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #151b22;
+  height: 720px;
+  width: 100%;
+  opacity: 0.9;
+  color: #c5a059;
+  font-size: 22px;
+  font-style: italic;
+  padding: 40px;
+  text-align: center;
+}
+
+.slide-container.bleed-image-layout .bleed-text-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.slide-container.bleed-image-layout .bleed-text-side p {
+  margin-bottom: 20px;
+}
+
+.bullet-list-custom {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bullet-list-custom li {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 25px;
+}
+
+.bullet-list-custom li i {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  color: #c5a059;
+  font-size: 20px;
+}
+
+.bullet-list-custom li strong {
+  color: #ffffff;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+}
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Capa -->
+<div class="slide-container" id="slide1">
+    <div class="title-layout">
+        <h1>Projeto <span>Rumo ao Bilhão</span></h1>
+        <p class="subtitle">Máquina de Captação, Inteligência Artificial e Escala de Assessoria.<br>O plano de ação da Eurostock para 2026.</p>
+    </div>
+</div>
+
+<!-- Slide 2: O Nosso Desafio e Meta -->
+<div class="slide-container" id="slide2">
+    <h2 class="slide-title">O Nosso Desafio e Meta</h2>
+    <div class="content-area">
+        <div class="highlight-numbers-layout">
+            <div>
+                <div class="number">R$ 200M</div>
+                <div class="number-label">Captação Líquida</div>
+            </div>
+            <div>
+                <h3>A Jornada de R$ 800M para R$ 1 Bilhão</h3>
+                <p>Para atingir o tão desejado marco do primeiro bilhão de reais sob custódia este ano, precisamos de gerar aproximadamente R$ 20 Milhões mensais.</p>
+                <p><strong>Como vamos lá chegar? Através de 3 Pilares:</strong></p>
+                <ul class="bullet-list-custom" style="margin-top: 20px;">
+                    <li><i class="fa-solid fa-bullseye"></i> <strong>1. Tráfego Pago:</strong> Reinventar a atração de leads vendendo a nossa autoridade.</li>
+                    <li><i class="fa-solid fa-robot"></i> <strong>2. Pré-venda (SDR):</strong> Escala infinita com Inteligência Artificial.</li>
+                    <li><i class="fa-solid fa-briefcase"></i> <strong>3. Assessoria:</strong> Focar a equipa 100% em conversão e ativação (fim do cold call).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3: Tráfego Pago - Diagnóstico -->
+<div class="slide-container" id="slide3">
+    <h2 class="slide-title">Tráfego Pago: Diagnóstico</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <h3>Por que razão os nossos leads estão tão caros?</h3>
+                <p>A análise do mercado financeiro e das nossas campanhas antigas revelou os três "ralos" por onde o nosso orçamento Inbound está a escoar:</p>
+                <ul>
+                    <li><strong>Cegueira de Anúncios:</strong> Criativos estáticos e 100% institucionais são ignorados. Nas redes sociais, o formato corporativo não retém a atenção. <strong>Impacto:</strong> O algoritmo pune-nos, disparando o nosso Custo por Clique (CPC) e o Custo por Impressão (CPM).</li>
+                    <li><strong>Comunicação Académica:</strong> Excesso de jargão (ex: "eficiência de capital"). O cliente de alta renda não quer uma aula; quer saber de proteção e rentabilidade. <strong>Impacto:</strong> Afasta o verdadeiro investidor (que não tem tempo) e atrai apenas curiosos ou estudantes.</li>
+                    <li><strong>Oferta Comoditizada:</strong> Oferecer a "Carteira Recomendada" como dezenas de outros escritórios não gera exclusividade. <strong>Impacto:</strong> Sem um gancho de curiosidade, a taxa de conversão na Landing Page despenca, encarecendo o CAC.</li>
+                </ul>
+            </div>
+            <div>
+                <div class="business-metric-box" style="background-color: #151b22; border: 1px solid #333f4f; border-radius: 12px; padding: 40px; height: 100%; display: flex; flex-direction: column; justify-content: center; min-height: 450px;">
+                    <h4 style="color: #ff6b6b; font-size: 28px; margin-bottom: 30px;"><i class="fa-solid fa-triangle-exclamation"></i> Impacto no Negócio</h4>
+                    <div style="margin-bottom: 30px;">
+                        <p style="font-size: 14px; color: #a0a0a0; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Custo por Lead (CPL)</p>
+                        <p style="font-size: 56px; color: #ffffff; font-weight: 700; line-height: 1; margin: 0;">+140% <span style="font-size: 20px; color: #ff6b6b; font-weight: 500; vertical-align: middle;">(Acima do limite)</span></p>
+                    </div>
+                    <div>
+                        <p style="font-size: 14px; color: #a0a0a0; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Taxa de Conversão (Página)</p>
+                        <p style="font-size: 56px; color: #ffffff; font-weight: 700; line-height: 1; margin: 0;">&lt; 1,5% <span style="font-size: 20px; color: #ff6b6b; font-weight: 500; vertical-align: middle;">(Desperdício)</span></p>
+                    </div>
+                    <div style="margin-top: auto; padding-top: 30px; border-top: 1px solid #333f4f;">
+                        <p style="font-size: 20px; color: #c5a059; font-style: italic; margin: 0;">"Estamos a pagar pelo clique de curiosos e a perder o investidor qualificado no Inbound."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4 (NOVO): A Solução - Tráfego Humanizado -->
+<div class="slide-container" id="slide4-humanizado">
+    <h2 class="slide-title">A Solução: Tráfego Humanizado</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <h3>Redução drástica do Custo por Lead (CPL)</h3>
+                <p>Para baratear as impressões e escalar a captação, vamos substituir a abordagem fria por uma estratégia de <strong>geração de conteúdo e conexão humana</strong> (aquecimento da audiência):</p>
+                <ul>
+                    <li><strong>Vídeos e Storytelling:</strong> Pessoas a comunicar com pessoas. Especialistas e clientes reais a partilhar histórias, desafios e resultados. O rosto humano retém a atenção e diminui o custo de impressão cobrado pelo algoritmo.</li>
+                    <li><strong>Conteúdo para as Redes Sociais:</strong> Nutrir os nossos canais orgânicos com publicações narrativas e de alto valor, criando uma comunidade quente e pronta a converter.</li>
+                    <li><strong>Atração por Histórias:</strong> Em vez de oferecermos um "relatório técnico", contamos a história de como aquela mesma informação protegeu o património de alguém.</li>
+                    <li><strong>Gatilhos de Antecipação:</strong> Criar desejo e expectativa pelos nossos materiais antes da oferta direta. O utilizador já chega qualificado e convencido (lead mais barato).</li>
+                </ul>
+            </div>
+            <div>
+                <div class="business-metric-box" style="background-color: #151b22; border: 1px solid #333f4f; border-radius: 12px; padding: 40px; height: 100%; display: flex; flex-direction: column; justify-content: center; min-height: 450px;">
+                    <h4 style="color: #6bff9b; font-size: 28px; margin-bottom: 30px;"><i class="fa-solid fa-rocket"></i> Projeção de Resultados</h4>
+                    <div style="margin-bottom: 30px;">
+                        <p style="font-size: 14px; color: #a0a0a0; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Redução do Custo por Lead (CPL)</p>
+                        <p style="font-size: 56px; color: #ffffff; font-weight: 700; line-height: 1; margin: 0;">-60% <span style="font-size: 20px; color: #6bff9b; font-weight: 500; vertical-align: middle;">(Eficiência)</span></p>
+                    </div>
+                    <div>
+                        <p style="font-size: 14px; color: #a0a0a0; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Aumento do "Stop Rate" (Atenção)</p>
+                        <p style="font-size: 56px; color: #ffffff; font-weight: 700; line-height: 1; margin: 0;">3x <span style="font-size: 20px; color: #6bff9b; font-weight: 500; vertical-align: middle;">(Maior retenção)</span></p>
+                    </div>
+                    <div style="margin-top: auto; padding-top: 30px; border-top: 1px solid #333f4f;">
+                        <p style="font-size: 20px; color: #c5a059; font-style: italic; margin: 0;">"Uma audiência aquecida não pergunta o preço, pergunta qual é o próximo passo."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4b: A Nossa Autoridade -->
+<div class="slide-container" id="slide4">
+    <h2 class="slide-title">A Nossa Autoridade</h2>
+    <div class="content-area">
+        <p style="text-align: left; width: 100%; margin-bottom: 30px;">A solução é a mudança para vídeos nativos curtos, focados não em terceiros, mas no nosso próprio histórico de excelência. Este é o nosso maior gancho:</p>
+        <div class="two-column tiled">
+            <div>
+                <h3>1º Lugar no Brasil</h3>
+                <p style="font-size: 22px; font-weight: 600; color: #ffffff;">Operações Estruturadas</p>
+                <p>Entre mais de 600 escritórios, somos líderes isolados. O novo gancho de copy focar-se-á exatamente nisso:</p>
+                <p><em>"Acha que o seu portefólio está protegido? Descubra como o escritório número 1 do Brasil está a proteger o capital e a alavancar os ganhos dos seus clientes de alta renda este ano."</em></p>
+            </div>
+            <div>
+                <h3>10º Lugar no Brasil</h3>
+                <p style="font-size: 22px; font-weight: 600; color: #ffffff;">Renda Variável</p>
+                <p>Uma credencial de peso para investidores sofisticados. A nova abordagem abordará a dor de quem opera sozinho:</p>
+                <p><em>"Está a operar Renda Variável sozinho? A Eurostock é o 10º melhor escritório do país nesse segmento. Baixe a nossa tese de alocação ou fale com um especialista."</em></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: O Gargalo Comercial -->
+<div class="slide-container" id="slide5">
+    <h2 class="slide-title">O Gargalo Comercial</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <h3>O Problema do SDR Humano</h3>
+                <p>A dependência de listas frias e o esforço manual estão a gerar um Custo de Aquisição (CAC) insustentável para o volume que precisamos de atingir:</p>
+                <ul>
+                    <li><strong>Falta de Volume Inbound:</strong> Sem tração nos anúncios, a equipa é forçada ao enriquecimento manual de listas genéricas.</li>
+                    <li><strong>Custo Elevado:</strong> Um único SDR custa, em média, R$ 56.400 ao ano (incluindo salários, encargos e telefonia).</li>
+                    <li><strong>Teto Físico de Produtividade:</strong> Um operador humano consegue realizar, com qualidade, apenas de 80 a 100 chamadas por dia.</li>
+                    <li><strong>Desgaste e Baixa Conversão:</strong> O tempo perdido com caixas de correio de voz, clientes desqualificados e a lentidão no tempo de resposta (SLA) esfriam o lead.</li>
+                </ul>
+            </div>
+            <div>
+                <div class="business-metric-box" style="background-color: #151b22; border: 1px solid #333f4f; border-radius: 12px; padding: 40px; height: 100%; display: flex; flex-direction: column; justify-content: center; min-height: 450px;">
+                    <h4 style="color: #ff6b6b; font-size: 28px; margin-bottom: 30px;"><i class="fa-solid fa-user-clock"></i> Limitação Operacional</h4>
+                    <div style="margin-bottom: 30px;">
+                        <p style="font-size: 14px; color: #a0a0a0; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Tempo em Chamadas Úteis</p>
+                        <p style="font-size: 56px; color: #ffffff; font-weight: 700; line-height: 1; margin: 0;">&lt; 30% <span style="font-size: 20px; color: #ff6b6b; font-weight: 500; vertical-align: middle;">(70% desperdiçado)</span></p>
+                    </div>
+                    <div>
+                        <p style="font-size: 14px; color: #a0a0a0; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Custo Fixo por Operador/Ano</p>
+                        <p style="font-size: 56px; color: #ffffff; font-weight: 700; line-height: 1; margin: 0;">R$ 56k <span style="font-size: 20px; color: #ff6b6b; font-weight: 500; vertical-align: middle;">(Alto Risco)</span></p>
+                    </div>
+                    <div style="margin-top: auto; padding-top: 30px; border-top: 1px solid #333f4f;">
+                        <p style="font-size: 20px; color: #c5a059; font-style: italic; margin: 0;">"Humanos a fazerem trabalho de robôs esgota a equipa e o orçamento."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Automação da Pré-venda -->
+<div class="slide-container" id="slide6">
+    <h2 class="slide-title">Automação da Pré-venda</h2>
+    <div class="content-area">
+        <p style="text-align: left; width: 100%; margin-bottom: 30px;">Implementação de Inteligência Artificial para absorver o novo volume de leads e triar listas de forma massiva e simultânea.</p>
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-brands fa-whatsapp"></i></div>
+                <h3>IA Talkey (Texto)</h3>
+                <p>Resposta imediata. A IA qualifica em segundos via WhatsApp, filtra curiosos e agenda reuniões (R1) apenas com leads quentes.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-headset"></i></div>
+                <h3>VAPI AI (Voz)</h3>
+                <p>Ligações ativas massivas. IA com voz hiper-realista que telefona, qualifica o perfil do investidor e transfere oportunidades reais instantaneamente.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+                <h3>Meta: 47% Conversão</h3>
+                <p>O <em>Speed to Lead</em> (resposta em menos de 1 minuto) somado a anúncios mais persuasivos criam o cenário perfeito para bater essa taxa de conversão.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Viabilidade Financeira -->
+<div class="slide-container" id="slide7">
+    <h2 class="slide-title">Viabilidade Financeira</h2>
+    <div class="content-area">
+        <p style="text-align: left; width: 100%; margin-bottom: 20px;">Comparativo de custos e eficiência entre o modelo atual e a infraestrutura de IA proposta.</p>
+        <div class="table-layout">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica Operacional</th>
+                        <th>SDR Humano (Atual)</th>
+                        <th>AI SDR (Talkey + Vapi)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Custo Mensal Base</td>
+                        <td>R$ 3.000,00</td>
+                        <td>~ R$ 800 a R$ 1.500</td>
+                    </tr>
+                    <tr>
+                        <td>Encargos + Benefícios</td>
+                        <td>~ R$ 1.500,00</td>
+                        <td>R$ 0,00</td>
+                    </tr>
+                    <tr>
+                        <td>Capacidade de Atendimento</td>
+                        <td>~ 80 a 100 chamadas/dia</td>
+                        <td><span class="highlight-text">Ilimitada (Milhares simultâneas)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Tempo de Resposta (SLA)</td>
+                        <td>Horário Comercial (com filas)</td>
+                        <td><span class="highlight-text">Imediato (Menos de 1 min / 24/7)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Custo Total Anual (Estimado)</td>
+                        <td style="color: #ff6b6b;">~ R$ 56.400,00</td>
+                        <td><span class="highlight-text" style="font-weight: 700;">~ R$ 18.000 a R$ 24.000</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: A Nova Máquina de Vendas -->
+<div class="slide-container" id="slide8">
+    <div class="section-title-layout">
+        <hr>
+        <h2>A Nova Máquina de Vendas</h2>
+        <p>Se a Inteligência Artificial assume a Triagem de Contactos Frios ("Cold Call"), qual passa a ser o papel do Assessor?<br><br>Ele deixa de ser um prospetor braçal e passa a ser exclusivamente um especialista em <strong>fecho de negócio, conversão e gestão de fortunas.</strong></p>
+    </div>
+</div>
+
+<!-- Slide 9: Fases de Carreira -->
+<div class="slide-container" id="slide9">
+    <h2 class="slide-title">As Fases de Carreira</h2>
+    <div class="content-area">
+        <div class="timeline-layout">
+            <div class="timeline-line"></div>
+            
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>Faixa Branca</h3>
+                    <p style="font-weight: 600; color: #ffffff; margin-bottom: 10px;">Assessor Júnior (O Closer)</p>
+                    <p>Recebe o lead quente da IA. Executa a R1 (Descoberta), fecha a conta e garante a ativação. Foco exclusivo no volume de entrada de clientes.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>Faixa Amarela</h3>
+                    <p style="font-weight: 600; color: #ffffff; margin-bottom: 10px;">Assessor Pleno (O Alocador)</p>
+                    <p>Assume o relacionamento com clientes ativados. Realiza cross-selling, gere a alocação e forma a carteira com foco na Receita Líquida.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="content-wrapper">
+                    <h3>Faixa Laranja</h3>
+                    <p style="font-weight: 600; color: #ffffff; margin-bottom: 10px;">Assessor Sénior (Wealth)</p>
+                    <p>Gestão de grandes fortunas (AUM > R$ 50M). Foca-se em Renda Variável, Sucessão, Holding e carteiras exclusivas.</p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Resumo e Próximos Passos -->
+<div class="slide-container bleed-image-layout" id="slide10">
+    <div class="content-container">
+        <h2 class="slide-title">Resumo e Próximos Passos</h2>
+        <div class="content-area">
+            <div class="bleed-text-side">
+                <h3>O Nosso Mapa até ao Bilhão</h3>
+                <p>As 3 ações cruciais para iniciar a transformação estrutural e financeira do escritório ainda este mês:</p>
+                
+                <ul class="bullet-list-custom">
+                    <li>
+                        <i class="fa-solid fa-play"></i>
+                        <strong>1. Aprovação Imediata:</strong>
+                        Autorização para substituição dos criativos da Meta Ads e gravação dos novos vídeos nativos de autoridade.
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-microchip"></i>
+                        <strong>2. Implementação de IA:</strong>
+                        Configuração dos fluxos da Vapi (Voz) e Talkey (WhatsApp) integrados às nossas listas no prazo de 15 a 30 dias.
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-users-gear"></i>
+                        <strong>3. Realocação da Equipa:</strong>
+                        Libertar os Assessores Juniores da prospeção fria, treinando-os estritamente em guiões de R1 e ativação rápida.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="image-container">
+        <div class="business-metric-box" style="background-color: #151b22; height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 60px; border-left: 1px solid #333f4f;">
+            <h4 style="color: #c5a059; font-size: 32px; margin-bottom: 40px;"><i class="fa-solid fa-flag-checkered"></i> O Próximo Nível</h4>
+            
+            <div style="margin-bottom: 30px;">
+                <p style="font-size: 16px; color: #a0a0a0; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Meta de Captação 2026</p>
+                <p style="font-size: 64px; color: #ffffff; font-weight: 700; line-height: 1; margin: 0;">R$ 200M</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <p style="font-size: 16px; color: #a0a0a0; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">Crescimento do AUM</p>
+                <p style="font-size: 64px; color: #ffffff; font-weight: 700; line-height: 1; margin: 0;">+ 25%</p>
+            </div>
+
+            <div style="margin-top: auto; padding-top: 30px; border-top: 1px solid #333f4f;">
+                <p style="font-size: 24px; color: #ffffff; font-weight: 500; margin: 0;">"Da prospeção braçal para a <span style="color: #c5a059;">inteligência em escala</span>."</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
